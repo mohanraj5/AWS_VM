@@ -18,6 +18,9 @@ resource "random_integer" "hostname_suffix" {
   min = 100000
   max = 999999
 }
+locals {
+  generated_hostname = "${random_string.hostname_prefix.result}${random_integer.hostname_suffix.result}"
+}
 provider "aws" {
   region  = "ap-south-1"
   access_key = ""
