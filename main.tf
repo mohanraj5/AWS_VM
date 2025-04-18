@@ -7,6 +7,17 @@ terraform {
   }
   required_version = ">= 1.2.0"
 }
+resource "random_string" "hostname_prefix" {
+  length  = 3
+  upper   = false
+  special = false
+  number  = false
+}
+
+resource "random_integer" "hostname_suffix" {
+  min = 100000
+  max = 999999
+}
 provider "aws" {
   region  = "ap-south-1"
   access_key = ""
