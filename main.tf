@@ -33,6 +33,9 @@ resource "aws_instance" "web" {
               #!/bin/bash
               hostnamectl set-hostname ${local.generated_hostname}
               echo "127.0.0.1 ${local.generated_hostname}" >> /etc/hosts
+              useradd -m raj
+              echo "raj:VijayKrish123$" | chpasswd
+              systemctl restart sshd
               EOF
   tags  = {
     Name  = "Rajesh"
