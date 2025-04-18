@@ -21,6 +21,24 @@ resource "random_integer" "hostname_suffix" {
 locals {
   generated_hostname = "${random_string.hostname_prefix.result}${random_integer.hostname_suffix.result}"
 }
+resource "aws_security_group" "ssh_access" {
+  name        = "allow_ssh"
+  description = "Allow SSH inbound traffic"
+  
+  ingress {
+    from_port   = 22
+    to_port     = 22
+    protocol    = "tcp"
+    cidr_blocks = ["0.0.0.0/0"]
+  }
+
+  egress {
+    from_port   = 0
+    to_port     = 0
+    protocol    = "-1"
+    cidr_blocks = ["0.0.0.0/0"]
+  }
+}
 provider "aws" {
   region  = "ap-south-1"
   access_key = ""
@@ -35,6 +53,7 @@ resource "aws_instance" "web" {
               echo "127.0.0.1 ${local.generated_hostname}" >> /etc/hosts
               useradd -m raj
               echo "raj:VijayKrish123$" | chpasswd
+              sed -i 's/PasswordAuthentication no/PasswordAuthentication yes/' /etc/ssh/sshd_config
               systemctl restart sshd
               EOF
   tags  = {
