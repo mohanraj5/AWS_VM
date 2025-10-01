@@ -13,7 +13,7 @@ provider "aws" {
   secret_key = ""
  }
 resource "aws_instance" "web" {
-  ami           = "ami-002f6e91abff6eb961"
+  ami           = "ami-02d26659fd82cf299"
   instance_type = var.instance_type
   tags  = {
     Name  = "Raj"
